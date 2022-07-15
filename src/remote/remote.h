@@ -33,8 +33,8 @@
   #include <Preferences.h>
 
   const int MIN_HALL = 350;
-  const int CENTER_HALL = 755;
-  const int MAX_HALL = 1023;
+  const int CENTER_HALL = 1900;
+  const int MAX_HALL = 2800;
 
   static intr_handle_t s_rtc_isr_handle;
 
@@ -45,8 +45,8 @@ struct RemoteSettings {
   bool needSave = false;
   bool debugMode = false;
   short minHallValue = MIN_HALL;
-  short centerHallValue = CENTER_HALL;
-  short maxHallValue = MAX_HALL;
+  short centerHallValue = 1900;
+  short maxHallValue = 2800;
   uint32_t boardID = 0;
 } settings;
 
@@ -95,8 +95,8 @@ enum ui_page {
 } page = PAGE_MAIN;
 
 // Battery monitoring
-const float minVoltage = 3.3; // min voltage with vibro motor
-const float maxVoltage = 4.2;
+const float minVoltage = 3.0; // min voltage with vibro motor
+const float maxVoltage = 4.15;
 const float refVoltage = 3.3; // Feather double-100K resistor divider
 
 unsigned long lastBatterySample = 0; // smooth remote voltage

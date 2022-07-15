@@ -120,8 +120,8 @@ void setup()
   digitalWrite(Vext, LOW);
 
 #ifdef RECEIVER_SCREEN
-  //display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  //display.powerOn();
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.powerOn();
 #endif
 }
 
@@ -433,7 +433,7 @@ void loop()
   {
     ArduinoOTA.handle();
   }
-  //updateScreen(); // 25 ms
+  updateScreen(); // 25 ms
   vTaskDelay(1);
 #endif
 }

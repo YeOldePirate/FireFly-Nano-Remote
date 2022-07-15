@@ -109,8 +109,8 @@ void setup() {
     brownoutInit(); // avoid low voltage boot loop
     initRadio();
     // config throttle
-    adc1_config_width(ADC_WIDTH_BIT_10);
-    adc1_config_channel_atten(ADC_THROTTLE, ADC_ATTEN_DB_2_5);
+    adc1_config_width(ADC_WIDTH_BIT_12);
+    adc1_config_channel_atten(ADC_THROTTLE, ADC_ATTEN_DB_11);
   #endif
 
   // 10 seconds average
@@ -559,8 +559,8 @@ void loadSettings() {
     preferences.begin("FireFlyNano", false);
     settings.debugMode = preferences.getBool("DEBUG", false);
     settings.minHallValue = preferences.getShort("MIN_HALL",  MIN_HALL);
-    settings.centerHallValue = preferences.getShort("CENTER_HALL", CENTER_HALL);
-    settings.maxHallValue = preferences.getShort("MAX_HALL", MAX_HALL);
+    settings.centerHallValue = preferences.getShort("CENTER_HALL", 1900);
+    settings.maxHallValue = preferences.getShort("MAX_HALL", 2800);
     preferences.end();
 
     loadBoards();
@@ -581,8 +581,8 @@ void saveSettings() {
     preferences.begin("FireFlyNano", false);
     preferences.putBool("DEBUG", settings.debugMode);
     preferences.putShort("MIN_HALL",  settings.minHallValue);
-    preferences.putShort("CENTER_HALL", settings.centerHallValue);
-    preferences.putShort("MAX_HALL", settings.maxHallValue);
+    preferences.putShort("CENTER_HALL", 1900);
+    preferences.putShort("MAX_HALL", 2800);
     preferences.end();
 
     settings.needSave = false;
@@ -1000,10 +1000,12 @@ float batteryLevelVolts() {
     uint16_t total = 0;
     uint8_t samples = 10;
 
-    // read raw value
-    for (uint8_t i = 0; i < samples; i++) {
+    digitalWrite(VBATT_GPIO, LOW);     
+    pinMode(ADC1_CHANNEL_1, OPEN_DRAIN);         // ESP32 Lora v2.1 reads on GPIO37 when GPIO21 is low          
+    for (uint8_t i = 0; i < samples; i++) {      // read raw value
       total += analogRead(PIN_BATTERY);
     }
+    pinMode(ADC1_CHANNEL_1, INPUT); 
 
     // calculate voltage
     float voltage;
@@ -1013,7 +1015,7 @@ float batteryLevelVolts() {
     #elif ESP32
       double reading = (double)total / (double)samples;
       voltage = -0.000000000000016 * pow(reading,4) + 0.000000000118171 * pow(reading,3)- 0.000000301211691 * pow(reading,2)+ 0.001109019271794 * reading + 0.034143524634089;
-      voltage = voltage * 2.64 * 4.2 / 4.71;
+      voltage = voltage * BATT_FACTOR * BATT_ERR ;
     #endif
 
     // don't smooth at startup
@@ -1706,7 +1708,7 @@ void drawDebugPage() {
     drawStringCenter(String(readThrottlePosition()), String(hallValue), y);
 
     y += 25;
-    drawStringCenter(settings.debugMode ? "On" : "Off", " ", y);
+    drawStringCenter(String(batteryLevelVolts()), " v", y);
 }
 
 int getStringWidth(String s) {

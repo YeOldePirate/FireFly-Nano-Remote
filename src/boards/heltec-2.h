@@ -23,7 +23,8 @@
 #define AS_SWITCH     13
 
 
-#define PIN_BATTERY   13
+#define PIN_BATTERY   37
+#define VBATT_GPIO    21  
 
 #define HAS_BUTTON KEY_BUILTIN // button "PRG" on board
 
@@ -34,7 +35,8 @@
 #define DISPLAY_ROTATION_90 0
 
 #define BATTERY_PROBE ADC2_CHANNEL_4 // uses GPIO7
-#define BATT_FACTOR 2 // voltage divider 100k/100k on board
+#define BATT_FACTOR 3.2 // voltage divider 220k/100k on board
+#define BATT_ERR 4.2/4.17
 
 // Pins for LORA chip SPI interface, reset line and interrupt lines
 // #define RF_RST  23 // RST_LoRa = 14;
