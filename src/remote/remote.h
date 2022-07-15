@@ -32,7 +32,7 @@
   #include <nvs_flash.h>
   #include <Preferences.h>
 
-  const int MIN_HALL = 350;
+  const int MIN_HALL = 920;
   const int CENTER_HALL = 1900;
   const int MAX_HALL = 2800;
 
@@ -45,8 +45,8 @@ struct RemoteSettings {
   bool needSave = false;
   bool debugMode = false;
   short minHallValue = MIN_HALL;
-  short centerHallValue = 1900;
-  short maxHallValue = 2800;
+  short centerHallValue = CENTER_HALL;
+  short maxHallValue = MAX_HALL;
   uint32_t boardID = 0;
 } settings;
 

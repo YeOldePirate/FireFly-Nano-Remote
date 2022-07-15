@@ -559,8 +559,8 @@ void loadSettings() {
     preferences.begin("FireFlyNano", false);
     settings.debugMode = preferences.getBool("DEBUG", false);
     settings.minHallValue = preferences.getShort("MIN_HALL",  MIN_HALL);
-    settings.centerHallValue = preferences.getShort("CENTER_HALL", 1900);
-    settings.maxHallValue = preferences.getShort("MAX_HALL", 2800);
+    settings.centerHallValue = preferences.getShort("CENTER_HALL", CENTER_HALL);
+    settings.maxHallValue = preferences.getShort("MAX_HALL", MAX_HALL);
     preferences.end();
 
     loadBoards();
@@ -581,8 +581,8 @@ void saveSettings() {
     preferences.begin("FireFlyNano", false);
     preferences.putBool("DEBUG", settings.debugMode);
     preferences.putShort("MIN_HALL",  settings.minHallValue);
-    preferences.putShort("CENTER_HALL", 1900);
-    preferences.putShort("MAX_HALL", 2800);
+    preferences.putShort("CENTER_HALL", settings.centerHallValue);
+    preferences.putShort("MAX_HALL", settings.maxHallValue);
     preferences.end();
 
     settings.needSave = false;
